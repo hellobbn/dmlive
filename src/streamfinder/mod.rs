@@ -3,6 +3,7 @@ pub mod douyu;
 pub mod huya;
 pub mod twitch;
 pub mod youtube;
+pub mod cc;
 
 use crate::{
     config::ConfigManager,
@@ -101,6 +102,18 @@ impl StreamFinder {
                     }
                     crate::config::Site::YoutubeLive => {
                         let b = youtube::Youtube::new();
+                        match b.get_live(&self.cm.room_url).await {
+                            Ok(u) => {
+                                let a: Vec<String> = u["url"].split("\n").map(|x| x.to_string()).collect();
+                                return Ok((u["title"].to_string(), a));
+                            }
+                            Err(e) => {
+                                info!("{}", e);
+                            }
+                        };
+                    }
+                    crate::config::Site::CCLive => {
+                        let b = cc::CC::new();
                         match b.get_live(&self.cm.room_url).await {
                             Ok(u) => {
                                 let a: Vec<String> = u["url"].split("\n").map(|x| x.to_string()).collect();

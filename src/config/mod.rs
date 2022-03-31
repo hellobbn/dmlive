@@ -34,6 +34,7 @@ pub enum Site {
     HuyaLive,
     TwitchLive,
     YoutubeLive,
+    CCLive,
 }
 
 pub struct ConfigManager {
@@ -91,6 +92,8 @@ impl ConfigManager {
             Site::TwitchLive
         } else if room_url.contains("youtube.com/") {
             Site::YoutubeLive
+        } else if room_url.contains("cc.163.com") {
+            Site::CCLive
         } else {
             panic!("unknown url")
         };

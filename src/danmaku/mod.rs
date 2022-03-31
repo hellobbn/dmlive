@@ -6,6 +6,7 @@ mod huya;
 mod mkv_header;
 mod twitch;
 mod youtube;
+mod cc;
 
 use crate::{
     config::ConfigManager,
@@ -234,6 +235,10 @@ impl Danmaku {
                 }
                 crate::config::Site::YoutubeLive => {
                     let b = youtube::Youtube::new();
+                    b.run(&self.cm.room_url, dtx.clone()).await
+                }
+                crate::config::Site::CCLive => {
+                    let b = cc::CC::new();
                     b.run(&self.cm.room_url, dtx.clone()).await
                 }
             } {

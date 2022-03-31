@@ -35,6 +35,9 @@ impl HLS {
         m3u8: &str,
         old_urls: &mut HashSet<String>,
     ) -> Result<LinkedList<String>, Box<dyn std::error::Error>> {
+        println!("m3u8 file: ");
+        println!("{}", m3u8);
+        println!("---");
         let lines: Vec<_> = m3u8.split("\n").collect();
         let mut sq = None;
         let mut urls = LinkedList::new();
@@ -160,6 +163,11 @@ impl HLS {
         };
         let ts_task = async move {
             while let Some(u) = rx.recv().await {
+                let mut u = u;
+                println!("u = {}", u);
+                if !u.contains("http") {
+                    u = format!("https://alipullhls.cc.netease.com/pushstation/{}", u);
+                }
                 let mut resp = client.get(u).header("Connection", "keep-alive").send().await?;
                 while let Some(chunk) = resp.chunk().await? {
                     stream.write_all(&chunk).await?;

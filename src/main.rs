@@ -17,6 +17,9 @@ use tokio::{
     task,
 };
 
+#[macro_use]
+extern crate structure;
+
 fn main() {
     let ma = clap::App::new("dmlive")
         .arg(Arg::with_name("url").short("u").long("url").value_name("STRING").required(true).takes_value(true))
